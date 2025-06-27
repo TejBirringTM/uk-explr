@@ -1,0 +1,30 @@
+{
+  "name": "uk-region-analysis",
+  "version": "0.0.0",
+  "description": "An attempt to consolidate UK data (censuses, companies house, etc.) to conduct various kinds of analyses.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write */**.ts",
+    "init": "jiti ./scripts/initialise.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/multistream": "^4.1.3",
+    "@types/pg": "^8.15.4",
+    "jiti": "^2.4.2",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.45.1",
+    "csv-parse": "^5.6.0",
+    "multistream": "^4.1.0",
+    "pg": "^8.16.2",
+    "stream-transform": "^3.3.3",
+    "zod": "^3.25.67"
+  }
+}

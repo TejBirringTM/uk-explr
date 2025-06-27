@@ -1,0 +1,61 @@
+import {
+  Pool,
+  PoolClient,
+  QueryConfig,
+  QueryConfigValues,
+  QueryResultRow,
+} from "pg";
+import { z } from "zod";
+import { logError } from "./error";
+import config, { DbUserKey } from "./config";
+
+class Postgres {
+  private readonly pool: Pool;
+  constructor(user: DbUserKey, dbName: string) {
+    this.pool = new Pool({
+      host: z.string().nonempty().parse(process.env["PG_HOST"]),
+      port: z.coerce.number().int().nonnegative().parse(process.env["PG_PORT"]),
+      user: config.dbUsers[user].username,
+      password: config.dbUsers[user].password,
+      database: dbName,
+    });
+    this.pool.on("error", (error) => {
+      logError(error);
+      process.exit(1);
+    });
+  }
+  query<R extends QueryResultRow = any, I = any[]>(
+    queryTextOrConfig: string | QueryConfig<I>,
+    values?: QueryConfigValues<I>,
+  ) {
+    return this.pool.query<R, I>(queryTextOrConfig, values);
+  }
+  async transaction<R>(fn: (client: PoolClient) => Promise<R>) {
+    const client = await this.pool.connect();
+    client
+      .on("error", (error) => {
+        logError(error);
+      })
+      .on("notice", (notice) => {
+        console.log(notice);
+      })
+      .on("notification", (notification) => {
+        console.log(notification);
+      });
+    try {
+      return await fn(client);
+    } catch (error) {
+      logError(error);
+      await client.query("ROLLBACK");
+      return null;
+    } finally {
+      client.release();
+    }
+  }
+  async close() {
+    await this.pool.end();
+  }
+}
+
+export default (user: DbUserKey, dbName = "postgres") =>
+  new Postgres(user, dbName);

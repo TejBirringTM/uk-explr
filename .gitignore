@@ -1,0 +1,13 @@
+# Node.js project dependencies
+node_modules
+
+# Env file
+.env
+
+# Temporary files and logs
+*.tmp
+*.temp
+*.log
+
+# OS-generated files
+.DS_Store
