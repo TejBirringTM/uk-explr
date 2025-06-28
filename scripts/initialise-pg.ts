@@ -41,7 +41,7 @@ await client.close();
 client = pg("pgAdmin", dbName);
 await client.transaction(async (client) => {
   // create schemas (and table therein)
-  const schemas = [await createSchema_UKCensusData(client)];
+  const schemas = [await createSchema_UkCensusData(client)];
   // grant permissions to editor
   const editorUsername = config.dbUsers.editor.username;
   await client.query(
@@ -67,16 +67,16 @@ await client.transaction(async (client) => {
 });
 await client.close();
 
-async function createSchema_UKCensusData(client: PoolClient) {
+async function createSchema_UkCensusData(client: PoolClient) {
   const schemaName = "uk-census-data";
   // create the schema
   await client.query(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
-  // create 'output-areas' table
+  // create 'output-areas' identity table
   await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."output-areas" (
         "id" varchar(250) PRIMARY KEY GENERATED ALWAYS AS ("oa_code" || '@' || "year") STORED,
         
         "oa_code" varchar(250) NOT NULL,
-        "year" integer NOT NULL CHECK (year > 0),
+        "year" integer NOT NULL CHECK ("year" > 0),
 
         "lsoa_code" varchar(250) NOT NULL,
         "msoa_code" varchar(250) NOT NULL,
@@ -85,5 +85,23 @@ async function createSchema_UKCensusData(client: PoolClient) {
         "lsoa_name" varchar(250) NOT NULL,
         "msoa_name" varchar(250) NOT NULL
     )`);
+  // create 'highest-qualification' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."highest-qualification" (
+    "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
+    "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
+    "no_qualification" integer NOT NULL CHECK ("no_qualification" >= 0),
+    "level_1" integer NOT NULL CHECK ("level_1" >= 0),
+    "level_2" integer NOT NULL CHECK ("level_2" >= 0),
+    "apprenticeship" integer NOT NULL CHECK ("apprenticeship" >= 0),
+    "level_3" integer NOT NULL CHECK ("level_3" >= 0),
+    "gte_level_4" integer NOT NULL CHECK ("gte_level_4" >= 0),
+    "other" integer NOT NULL CHECK ("other" >= 0)
+  )`);
+  // create 'postal-codes' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."postal-codes" (
+    "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
+    "postal_code" varchar(25) NOT NULL,
+    "source" varchar(250) NOT NULL
+  )`);
   return schemaName;
 }
