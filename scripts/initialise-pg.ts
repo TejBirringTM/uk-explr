@@ -103,5 +103,19 @@ async function createSchema_UkCensusData(client: PoolClient) {
     "postal_code" varchar(25) NOT NULL,
     "source" varchar(250) NOT NULL
   )`);
+  // create 'occupation' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."occupation" (
+    "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
+    "all_usual_residents_gte_16_years_of_age_in_employment_week_before_census" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age_in_employment_week_before_census" >= 0),
+    "managers_and_directors_and_senior_officials" integer NOT NULL CHECK ("managers_and_directors_and_senior_officials" >= 0),
+    "professional_occupations" integer NOT NULL CHECK ("professional_occupations" >= 0),
+    "associate_professional_and_technical_occupations" integer NOT NULL CHECK ("associate_professional_and_technical_occupations" >= 0),
+    "administrative_and_secretarial_occupations" integer NOT NULL CHECK ("administrative_and_secretarial_occupations" >= 0),
+    "skilled_trades_occupations" integer NOT NULL CHECK ("skilled_trades_occupations" >= 0),
+    "caring_and_leisure_and_other_service_occupations" integer NOT NULL CHECK ("caring_and_leisure_and_other_service_occupations" >= 0),
+    "sales_and_customer_service_occupations" integer NOT NULL CHECK ("sales_and_customer_service_occupations" >= 0),
+    "process_and_plant_and_machine_operatives" integer NOT NULL CHECK ("process_and_plant_and_machine_operatives" >= 0),
+    "elementary_occupations" integer NOT NULL CHECK ("elementary_occupations" >= 0)
+  )`);
   return schemaName;
 }
