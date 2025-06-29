@@ -1,0 +1,114 @@
+Title: Tenure
+Description: This dataset provides Census 2021 estimates that classify households in England and Wales by tenure. The estimates are as at Census Day, 21 March 2021.
+Issued: 2023-01-06T00:00:00.000Z
+Next Release: 
+Identifier: Tenure
+Keywords: [ltla hh_tenure_9a]
+Language: English
+Contact: Michael Roskams, census.customerservices@ons.gov.uk, +44 1329 444972
+Latest Changes: []
+Periodicity: 
+Distribution:
+	Extension: xls
+	Size: 77061
+	URL: https://download.ons.gov.uk/downloads/datasets/TS054/editions/2021/versions/2.xlsx
+
+	Extension: txt
+	Size: 3964
+	URL: https://download.ons.gov.uk/downloads/datasets/TS054/editions/2021/versions/2.txt
+
+	Extension: csv
+	Size: 184367
+	URL: https://download.ons.gov.uk/downloads/datasets/TS054/editions/2021/versions/2.csv
+
+	Extension: csvw
+	Size: 2604
+	URL: https://download.ons.gov.uk/downloads/datasets/TS054/editions/2021/versions/2.csv-metadata.json
+
+Unit of measure: Household
+License: 
+Canonical Topic: 
+Survey: 
+Usage Notes:
+Version: 2
+
+Area Type
+
+Census 2021 statistics are published for a number of different geographies.
+These can be large, for example the whole of England, or small, for example
+an output area (OA), the lowest level of geography for which statistics are
+produced.
+
+For higher levels of geography, more detailed statistics can be produced.
+When a lower level of geography is used, such as output areas (which have
+a minimum of 100 persons), the statistics produced have less detail. This is
+to protect the confidentiality of people and ensure that individuals or their
+characteristics cannot be identified.
+
+
+Coverage
+
+Census 2021 statistics are published for the whole of England and Wales.
+However, you can choose to filter areas by:
+
+- country - for example, Wales
+- region - for example, London
+- local authority - for example, Cornwall
+- health area – for example, Clinical Commissioning Group
+- statistical area - for example, MSOA or LSOA
+
+
+Protecting personal data
+
+Sometimes we need to make changes to data if it is possible to identify
+individuals. This is known as statistical disclosure control.
+
+In Census 2021, we:
+- swapped records (targeted record swapping), for example, if a household 
+  was likely to be identified in datasets because it has unusual
+  characteristics, we swapped the record with a similar one from a nearby
+  small area (very unusual households could be swapped with one in a nearby
+  local authority)
+- added small changes to some counts (cell key perturbation), for example,
+  we might change a count of four to a three or a five – this might make
+  small differences between tables depending on how the data are broken down
+  when we applied perturbation
+
+Read more in Section 5 of our article Design for Census 2021.
+
+Dimensions:
+
+	ID: ltla
+
+	Label: Lower Tier Local Authorities
+
+	Description: Lower tier local authorities provide a range of local services. In England there are 309 lower tier local authorities. These are made up of non-metropolitan districts (181), unitary authorities (59), metropolitan districts (36) and London boroughs (33, including City of London). In Wales there are 22 local authorities made up of 22 unitary authorities. Of these local authority types, only non-metropolitan districts are not additionally classified as upper tier local authorities.
+
+	Number Of Options: 331
+
+	Quality Statement: 
+
+
+	ID: hh_tenure_9a
+
+	Label: Tenure of household (9 categories)
+
+	Description: Whether a household owns or rents the accommodation that it occupies. 
+
+Owner-occupied accommodation can be:
+
+* owned outright, which is where the household owns all of the accommodation 
+* with a mortgage or loan 
+* part-owned on a shared ownership scheme 
+
+ Rented accommodation can be:
+
+* private rented (for example, rented through a private landlord or letting agent 
+* social rented through a local council or housing association
+
+This information is not available for household spaces with no usual residents.
+
+	Number Of Options: 9
+
+	Quality Statement: There is evidence of people incorrectly identifying their type of landlord as ”Council or local authority” or “Housing association”. You should add these two categories together when analysing data that uses this variable.
+https://www.ons.gov.uk/peoplepopulationandcommunity/housing/methodologies/housingqualityinformationforcensus2021

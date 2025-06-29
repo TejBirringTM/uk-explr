@@ -117,5 +117,21 @@ async function createSchema_UkCensusData(client: PoolClient) {
     "process_and_plant_and_machine_operatives" integer NOT NULL CHECK ("process_and_plant_and_machine_operatives" >= 0),
     "elementary_occupations" integer NOT NULL CHECK ("elementary_occupations" >= 0)
   )`);
+  // create 'housing-tenure' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."housing-tenure" (
+     "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
+     "all_households" integer NOT NULL CHECK("all_households" >= 0),
+     "owned" integer NOT NULL CHECK("owned" = "owned_outright" + "owned_w_mortgage_or_loan" and "owned" >= 0),
+     "owned_outright" integer NOT NULL CHECK("owned_outright" >= 0),
+     "owned_w_mortgage_or_loan" integer NOT NULL CHECK("owned_w_mortgage_or_loan" >= 0),
+     "shared_ownership" integer NOT NULL CHECK("shared_ownership" >= 0),
+     "social_rented" integer NOT NULL CHECK("social_rented" = "social_rented_from_local_authority" + "social_rented_from_other" and "social_rented" >= 0),
+     "social_rented_from_local_authority" integer NOT NULL CHECK("social_rented_from_local_authority" >= 0),
+     "social_rented_from_other" integer NOT NULL CHECK("social_rented_from_other" >= 0),
+     "private_rented" integer NOT NULL CHECK("private_rented" = "private_rented_from_landlord_or_letting_agency" + "private_rented_from_other" and "private_rented" >= 0),
+     "private_rented_from_landlord_or_letting_agency" integer NOT NULL CHECK("private_rented_from_landlord_or_letting_agency" >= 0),
+     "private_rented_from_other" integer NOT NULL CHECK("private_rented_from_other" >= 0),
+     "lives_rent_free" integer NOT NULL CHECK("lives_rent_free" >= 0)
+  )`);
   return schemaName;
 }
