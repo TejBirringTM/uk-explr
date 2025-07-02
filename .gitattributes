@@ -1,0 +1,9 @@
+data/raw/uk-census-data/postal-codes/PCD_OA21_LSOA21_MSOA21_LAD_AUG24_UK_LU.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/occupation/2021-ts063-occupation.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/output-areas/OA01_LSOA01_MSOA01_EW_LU_b75358eac2274f4fb012dcd32d13f5cf_-6173262702410378384.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/output-areas/Output_Area_to_Lower_layer_Super_Output_Area_to_Middle_layer_Super_Output_Area_to_Local_Authority_District_(December_2011)_Lookup_in_England_and_Wales.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/housing-tenure/2021-ts054-housing-tenure.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/highest-qualification/2021-ts067-highest-level-of-qualification.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/output-areas/Output_Area_to_Lower_layer_Super_Output_Area_to_Middle_layer_Super_Output_Area_to_Local_Authority_District_(December_2021)_Lookup_in_England_and_Wales_v3.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/economic-activity-status/2021-ts066-economic-activity-status.csv filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text
