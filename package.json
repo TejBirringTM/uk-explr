@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write */**.ts",
+    "format": "prettier --write **/*.ts",
     "init": "jiti ./scripts/initialise.ts"
   },
   "keywords": [],

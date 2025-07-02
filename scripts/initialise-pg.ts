@@ -74,13 +74,13 @@ async function createSchema_UkCensusData(client: PoolClient) {
   // create 'output-areas' identity table
   await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."output-areas" (
         "id" varchar(250) PRIMARY KEY GENERATED ALWAYS AS ("oa_code" || '@' || "year") STORED,
-        
+
         "oa_code" varchar(250) NOT NULL,
         "year" integer NOT NULL CHECK ("year" > 0),
 
         "lsoa_code" varchar(250) NOT NULL,
         "msoa_code" varchar(250) NOT NULL,
-        
+
         "oa_name" varchar(250),
         "lsoa_name" varchar(250) NOT NULL,
         "msoa_name" varchar(250) NOT NULL
@@ -132,6 +132,53 @@ async function createSchema_UkCensusData(client: PoolClient) {
      "private_rented_from_landlord_or_letting_agency" integer NOT NULL CHECK("private_rented_from_landlord_or_letting_agency" >= 0),
      "private_rented_from_other" integer NOT NULL CHECK("private_rented_from_other" >= 0),
      "lives_rent_free" integer NOT NULL CHECK("lives_rent_free" >= 0)
+  )`);
+  // create 'economic-activity-status' table, TO DO: improve checks with summation
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."economic-activity-status" (
+    "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
+    "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
+
+    "active_not_ft_student" integer NOT NULL CHECK ("active_not_ft_student" >= 0),
+    "active_not_ft_student:unemployed" integer NOT NULL CHECK ("active_not_ft_student:unemployed" >= 0),
+
+    "active_not_ft_student:employed" integer NOT NULL CHECK ("active_not_ft_student:employed" >= 0),
+
+    "active_not_ft_student:employed:employee" integer NOT NULL CHECK ("active_not_ft_student:employed:employee" >= 0),
+    "active_not_ft_student:employed:employee:ft" integer NOT NULL CHECK ("active_not_ft_student:employed:employee:ft" >= 0),
+    "active_not_ft_student:employed:employee:pt" integer NOT NULL CHECK ("active_not_ft_student:employed:employee:pt" >= 0),
+
+    "active_not_ft_student:employed:self_employed_no_employees" integer NOT NULL CHECK ("active_not_ft_student:employed:self_employed_no_employees" >= 0),
+    "active_not_ft_student:employed:self_employed_no_employees:ft" integer NOT NULL CHECK ("active_not_ft_student:employed:self_employed_no_employees:ft" >= 0),
+    "active_not_ft_student:employed:self_employed_no_employees:pt" integer NOT NULL CHECK ("active_not_ft_student:employed:self_employed_no_employees:pt" >= 0),
+
+    "active_not_ft_student:employed:self_employed_w_employees" integer NOT NULL CHECK ("active_not_ft_student:employed:self_employed_w_employees" >= 0),
+    "active_not_ft_student:employed:self_employed_w_employees:ft" integer NOT NULL CHECK ("active_not_ft_student:employed:self_employed_w_employees:ft" >= 0),
+    "active_not_ft_student:employed:self_employed_w_employees:pt" integer NOT NULL CHECK ("active_not_ft_student:employed:self_employed_w_employees:pt" >= 0),
+
+    "active_ft_student" integer NOT NULL CHECK ("active_ft_student" >= 0),
+
+    "active_ft_student:unemployed" integer NOT NULL CHECK ("active_ft_student:unemployed" >= 0),
+
+    "active_ft_student:employed" integer NOT NULL CHECK ("active_ft_student:employed" >= 0),
+
+    "active_ft_student:employed:employee" integer NOT NULL CHECK ("active_ft_student:employed:employee" >= 0),
+    "active_ft_student:employed:employee:ft" integer NOT NULL CHECK ("active_ft_student:employed:employee:ft" >= 0),
+    "active_ft_student:employed:employee:pt" integer NOT NULL CHECK ("active_ft_student:employed:employee:pt" >= 0),
+
+    "active_ft_student:employed:self_employed_no_employees" integer NOT NULL CHECK ("active_ft_student:employed:self_employed_no_employees" >= 0),
+    "active_ft_student:employed:self_employed_no_employees:ft" integer NOT NULL CHECK ("active_ft_student:employed:self_employed_no_employees:ft" >= 0),
+    "active_ft_student:employed:self_employed_no_employees:pt" integer NOT NULL CHECK ("active_ft_student:employed:self_employed_no_employees:pt" >= 0),
+
+    "active_ft_student:employed:self_employed_w_employees" integer NOT NULL CHECK ("active_ft_student:employed:self_employed_w_employees" >= 0),
+    "active_ft_student:employed:self_employed_w_employees:ft" integer NOT NULL CHECK ("active_ft_student:employed:self_employed_w_employees:ft" >= 0),
+    "active_ft_student:employed:self_employed_w_employees:pt" integer NOT NULL CHECK ("active_ft_student:employed:self_employed_w_employees:pt" >= 0),
+
+    "inactive" integer NOT NULL CHECK ("inactive" >= 0),
+    "inactive:retired" integer NOT NULL CHECK ("inactive:retired" >= 0),
+    "inactive:student" integer NOT NULL CHECK ("inactive:student" >= 0),
+    "inactive:looking_after_home_or_family" integer NOT NULL CHECK ("inactive:looking_after_home_or_family" >= 0),
+    "inactive:long_term_sickness_or_disabled" integer NOT NULL CHECK ("inactive:long_term_sickness_or_disabled" >= 0),
+    "inactive:other" integer NOT NULL CHECK ("inactive:other" >= 0)
   )`);
   return schemaName;
 }
