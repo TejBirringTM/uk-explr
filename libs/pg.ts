@@ -9,6 +9,8 @@ import { z } from "zod";
 import { logError } from "./error";
 import config, { DbUserKey } from "./config";
 
+type TransactionFn<R> = (client: PoolClient) => Promise<R>;
+
 class Postgres {
   private readonly pool: Pool;
   constructor(user: DbUserKey, dbName: string) {
@@ -24,13 +26,13 @@ class Postgres {
       process.exit(1);
     });
   }
-  query<R extends QueryResultRow = any, I = any[]>(
+  async query<R extends QueryResultRow = any, I = any[]>(
     queryTextOrConfig: string | QueryConfig<I>,
     values?: QueryConfigValues<I>,
   ) {
-    return this.pool.query<R, I>(queryTextOrConfig, values);
+    return await this.pool.query<R, I>(queryTextOrConfig, values);
   }
-  async transaction<R>(fn: (client: PoolClient) => Promise<R>) {
+  async transaction<R>(fn: TransactionFn<R>) {
     const client = await this.pool.connect();
     client
       .on("error", (error) => {
@@ -45,8 +47,8 @@ class Postgres {
     try {
       return await fn(client);
     } catch (error) {
-      logError(error);
       await client.query("ROLLBACK");
+      logError(error);
       return null;
     } finally {
       client.release();
