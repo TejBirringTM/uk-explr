@@ -6,55 +6,76 @@ import { transform } from "stream-transform";
 import { logError, mergeError } from "./error";
 import { tick } from "./tick-tock";
 
-export default function processCsv<T>(
+export type ProcessRowFn<T, PrintOut = T> = (
+  parsed: T,
+  raw: any,
+) => Promise<PrintOut | null>; // null depicts item has been omitted
+export type OnFinishedFn = () => Promise<void>;
+
+export default async function processCsv<T>(
   csvFiles: string[],
   csvParseOptions: Options,
   rowSchema: ZodType<T>,
-  onRowParsed: (parsed: T, raw: any) => Promise<void>,
-  onStreamEnd: () => Promise<void>,
+  processRowFn: ProcessRowFn<T>,
+  onFinishedFn: OnFinishedFn,
 ) {
-  // create input streamer with own CSV parser
+  /**
+   * initialise the input stream:
+   * for each CSV file, create read stream with own CSV parser
+   */
   const streamer = new MultiStream(
     csvFiles.map(
       (csvFile) => () =>
         fs
           .createReadStream(csvFile)
-          .on("error", (error) => {
-            logError(mergeError(error, { name: "StreamerError" }));
-            process.exit(1);
-          })
+          .on("error", (error) => processError(error, "FileStreamerError"))
           .pipe(parse(csvParseOptions))
-          .on("error", (error) => {
-            logError(mergeError(error, { name: "ParserError" }));
-            process.exit(1);
-          }),
+          .on("error", (error) => processError(error, "CsvFileParserError")),
     ),
     { objectMode: true },
   );
-  // create object transformer (parallelised)
-  let count = 0n;
-  const transformer = transform(async (rawObj) => {
-    // parse the row object
-    const parsedRow = rowSchema.parse(rawObj);
-    // run the handler on the parsed row object
-    const transformedOutput = await onRowParsed(parsedRow, rawObj);
-    // increment count to show row has been processed
-    count++;
-    // return for (any/future) next stage in the pipeline
-    return transformedOutput;
-  }).on("error", (error) => {
-    logError(mergeError(error, { name: "TransformerError" }));
-    process.exit(1);
-  });
-  // start processing
+  /**
+   * initialise the processing pipeline
+   */
+  const pipeline = streamer
+    .pipe(rowProcessor(rowSchema, processRowFn))
+    .on("error", (error) => processError(error, "RowProcessorError"));
+  /**
+   * read out from the stream till end reached
+   */
+  let rowCount = 0n;
   const tock = tick();
-  streamer.pipe(transformer).on("finish", () => {
-    onStreamEnd().then(() => {
-      const duration = tock();
-      console.log(
-        "Finished!",
-        `\n${count.toLocaleString()} row(s) processed in ${duration.seconds.toLocaleString()} seconds.`,
-      );
-    });
-  });
+  for await (const n of pipeline) {
+    console.debug(n);
+    rowCount++;
+  }
+  const duration = tock();
+  /**
+   * execute `onFinishedFn` callback function
+   */
+  await onFinishedFn();
+  console.log(
+    "Finished!",
+    `\n${rowCount.toLocaleString()} row(s) processed in ${duration.seconds.toLocaleString()} seconds.`,
+  );
 }
+
+function processError(error: unknown, mergeErrorName?: string) {
+  logError(
+    mergeErrorName && error instanceof Error
+      ? mergeError(error, { name: mergeErrorName })
+      : error,
+  );
+  process.exit(1);
+}
+
+const rowProcessor = <T>(schema: ZodType<T>, processRowFn: ProcessRowFn<T>) =>
+  transform(
+    {
+      parallel: 100,
+    },
+    async (rawObj) => {
+      const parsedRow = schema.parse(rawObj);
+      return await processRowFn(parsedRow, rawObj);
+    },
+  );

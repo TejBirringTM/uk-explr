@@ -5,7 +5,7 @@ export function tick() {
     const duration = finishTime - startTime;
     return {
       milliseconds: Math.ceil(duration),
-      seconds: Math.ceil(duration / 60),
+      seconds: Math.ceil(duration / 1000),
     };
   };
   return tock;
