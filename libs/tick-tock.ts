@@ -1,11 +1,16 @@
+export type TickTockDuration = {
+  inMilliseconds: number;
+  inSeconds: number;
+};
+
 export function tick() {
   const startTime = performance.now();
-  const tock = () => {
+  const tock = (): TickTockDuration => {
     const finishTime = performance.now();
     const duration = finishTime - startTime;
     return {
-      milliseconds: Math.ceil(duration),
-      seconds: Math.ceil(duration / 1000),
+      inMilliseconds: Math.ceil(duration),
+      inSeconds: Math.ceil(duration / 1000),
     };
   };
   return tock;

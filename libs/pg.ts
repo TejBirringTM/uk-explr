@@ -1,13 +1,13 @@
 import {
   Pool,
-  PoolClient,
-  QueryConfig,
-  QueryConfigValues,
-  QueryResultRow,
+  type PoolClient,
+  type QueryConfig,
+  type QueryConfigValues,
+  type QueryResultRow,
 } from "pg";
 import { z } from "zod";
 import { logError } from "./error";
-import config, { DbUserKey } from "./config";
+import config, { type DbUserKey } from "./config";
 
 type TransactionFn<R> = (client: PoolClient) => Promise<R>;
 

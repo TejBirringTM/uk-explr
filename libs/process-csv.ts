@@ -1,10 +1,10 @@
 import MultiStream from "multistream";
 import { ZodType } from "zod";
 import fs from "node:fs";
-import { Options, parse } from "csv-parse";
+import { type Options, parse } from "csv-parse";
 import { transform } from "stream-transform";
-import { logError, mergeError } from "./error";
-import { tick } from "./tick-tock";
+import { logError, mergeError } from "./error.js";
+import { tick, type TickTockDuration } from "./tick-tock.js";
 
 export type ProcessRowFn<T, PrintOut = T> = (
   parsed: T,
@@ -12,13 +12,20 @@ export type ProcessRowFn<T, PrintOut = T> = (
 ) => Promise<PrintOut | null>; // null depicts item has been omitted
 export type OnFinishedFn = () => Promise<void>;
 
+export type CsvProcessStats = {
+  name: Lowercase<string>;
+  nRowsProcessed: bigint;
+  duration: TickTockDuration;
+};
+
 export default async function processCsv<T>(
+  taskName: Lowercase<string>,
   csvFiles: string[],
   csvParseOptions: Options,
   rowSchema: ZodType<T>,
   processRowFn: ProcessRowFn<T>,
   onFinishedFn: OnFinishedFn,
-) {
+): Promise<CsvProcessStats> {
   /**
    * initialise the input stream:
    * for each CSV file, create read stream with own CSV parser
@@ -43,6 +50,7 @@ export default async function processCsv<T>(
   /**
    * read out from the stream till end reached
    */
+  console.log(`Starting ${taskName}...`);
   let rowCount = 0n;
   const tock = tick();
   for await (const n of pipeline) {
@@ -55,9 +63,14 @@ export default async function processCsv<T>(
    */
   await onFinishedFn();
   console.log(
-    "Finished!",
-    `\n${rowCount.toLocaleString()} row(s) processed in ${duration.seconds.toLocaleString()} seconds.`,
+    `Finished ${taskName}!`,
+    `\n${rowCount.toLocaleString()} row(s) processed in ${duration.inSeconds.toLocaleString()} seconds.`,
   );
+  return {
+    name: taskName,
+    nRowsProcessed: rowCount,
+    duration: duration,
+  };
 }
 
 function processError(error: unknown, mergeErrorName?: string) {

@@ -1,8 +1,7 @@
-import "../libs/load-env";
-import config, { dbName } from "../libs/config";
-import pg from "../libs/pg";
-import { dbExists, userExists } from "./helpers/pg";
-import { PoolClient } from "pg";
+import config, { dbName } from "@/libs/config";
+import pg from "@/libs/pg";
+import { dbExists, userExists } from "../helpers/pg";
+import { type PoolClient } from "pg";
 
 // create db if doesn't exist; create users if doesn't exist
 let client = pg("pgAdmin");
@@ -85,8 +84,8 @@ async function createSchema_UkCensusData(client: PoolClient) {
         "lsoa_name" varchar(250) NOT NULL,
         "msoa_name" varchar(250) NOT NULL
     )`);
-  // create 'highest-qualification' table
-  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."highest-qualification" (
+  // create 'highest-qualifications' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."highest-qualifications" (
     "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
     "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
     "no_qualification" integer NOT NULL CHECK ("no_qualification" >= 0),
@@ -103,8 +102,8 @@ async function createSchema_UkCensusData(client: PoolClient) {
     "postal_code" varchar(25) NOT NULL,
     "source" varchar(250) NOT NULL
   )`);
-  // create 'occupation' table
-  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."occupation" (
+  // create 'occupations' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."occupations" (
     "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
     "all_usual_residents_gte_16_years_of_age_in_employment_week_before_census" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age_in_employment_week_before_census" >= 0),
     "managers_and_directors_and_senior_officials" integer NOT NULL CHECK ("managers_and_directors_and_senior_officials" >= 0),
@@ -117,8 +116,8 @@ async function createSchema_UkCensusData(client: PoolClient) {
     "process_and_plant_and_machine_operatives" integer NOT NULL CHECK ("process_and_plant_and_machine_operatives" >= 0),
     "elementary_occupations" integer NOT NULL CHECK ("elementary_occupations" >= 0)
   )`);
-  // create 'housing-tenure' table
-  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."housing-tenure" (
+  // create 'housing-tenures' table
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."housing-tenures" (
      "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
      "all_households" integer NOT NULL CHECK("all_households" >= 0),
      "owned" integer NOT NULL CHECK("owned" = "owned_outright" + "owned_w_mortgage_or_loan" and "owned" >= 0),
@@ -134,7 +133,7 @@ async function createSchema_UkCensusData(client: PoolClient) {
      "lives_rent_free" integer NOT NULL CHECK("lives_rent_free" >= 0)
   )`);
   // create 'economic-activity-status' table, TO DO: improve checks with summation
-  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."economic-activity-status" (
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."economic-activity-statuses" (
     "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
     "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
 
