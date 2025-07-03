@@ -1,72 +1,6 @@
-import config, { dbName } from "@/libs/config";
-import pg from "@/libs/pg";
-import { dbExists, userExists } from "../helpers/pg";
-import { type PoolClient } from "pg";
+import type { PoolClient } from "pg";
 
-// create db if doesn't exist; create users if doesn't exist
-let client = pg("pgAdmin");
-await client.transaction(async (client) => {
-  // create db on cluster
-  if (!(await dbExists(client, dbName))) {
-    await client.query(`CREATE DATABASE "${dbName}"`);
-    console.debug(console.debug(`Database '${dbName}' created.`));
-  } else {
-    console.debug(console.debug(`Database '${dbName}' already exists.`));
-  }
-  // create user on cluster: editor
-  const editorUsername = config.dbUsers.editor.username;
-  if (!(await userExists(client, editorUsername))) {
-    await client.query(
-      `CREATE USER "${editorUsername}" WITH ENCRYPTED PASSWORD '${config.dbUsers.editor.password}'`,
-    );
-    console.debug(`User '${editorUsername}' created.`);
-  } else {
-    console.debug(`User '${editorUsername}' already exists.`);
-  }
-  // create user on cluster: reader
-  const readerUsername = config.dbUsers.reader.username;
-  if (!(await userExists(client, readerUsername))) {
-    await client.query(
-      `CREATE USER "${readerUsername}" WITH ENCRYPTED PASSWORD '${config.dbUsers.reader.password}'`,
-    );
-    console.debug(`User '${readerUsername}' created.`);
-  } else {
-    console.debug(`User '${readerUsername}' already exists.`);
-  }
-});
-await client.close();
-
-// initialise the database
-client = pg("pgAdmin", dbName);
-await client.transaction(async (client) => {
-  // create schemas (and table therein)
-  const schemas = [await createSchema_UkCensusData(client)];
-  // grant permissions to editor
-  const editorUsername = config.dbUsers.editor.username;
-  await client.query(
-    `GRANT CONNECT ON DATABASE "${dbName}" TO "${editorUsername}"`,
-  );
-  for (const schemaName of schemas) {
-    await client.query(`
-            GRANT USAGE ON SCHEMA "${schemaName}" TO "${editorUsername}";
-            GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA "${schemaName}" TO "${editorUsername}";
-        `);
-  }
-  // grant permissions to reader
-  const readerUsername = config.dbUsers.reader.username;
-  await client.query(
-    `GRANT CONNECT ON DATABASE "${dbName}" TO "${readerUsername}"`,
-  );
-  for (const schemaName of schemas) {
-    await client.query(`
-            GRANT USAGE ON SCHEMA "${schemaName}" TO "${readerUsername}";
-            GRANT SELECT ON ALL TABLES IN SCHEMA "${schemaName}" TO "${readerUsername}"
-        `);
-  }
-});
-await client.close();
-
-async function createSchema_UkCensusData(client: PoolClient) {
+export async function createSchema_UkCensusData(client: PoolClient) {
   const schemaName = "uk-census-data";
   // create the schema
   await client.query(`CREATE SCHEMA IF NOT EXISTS "${schemaName}"`);
@@ -183,15 +117,15 @@ async function createSchema_UkCensusData(client: PoolClient) {
   await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."socio-economic-classifications" (
      "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
      "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
-     "L1|L2|L3" integer NOT NULL CHECK("L1|L2|L3" >= 0),
-     "L4|L5|L6" integer NOT NULL CHECK("L4|L5|L6" >= 0),
-     "L7" integer NOT NULL CHECK("L7" >= 0),
-     "L8|L9" integer NOT NULL CHECK("L8|L9" >= 0),
-     "L10|L11" integer NOT NULL CHECK("L10|L11" >= 0),
-     "L12" integer NOT NULL CHECK("L12" >= 0),
-     "L13" integer NOT NULL CHECK("L13" >= 0),
-     "L14.1|L14.2" integer NOT NULL CHECK("L14.1|L14.2" >= 0),
-     "L15" integer NOT NULL CHECK("L15" >= 0)
+     "l1+l2+l3" integer NOT NULL CHECK("l1+l2+l3" >= 0),
+     "l4+l5+l6" integer NOT NULL CHECK("l4+l5+l6" >= 0),
+     "l7" integer NOT NULL CHECK("l7" >= 0),
+     "l8+l9" integer NOT NULL CHECK("l8+l9" >= 0),
+     "l10+l11" integer NOT NULL CHECK("l10+l11" >= 0),
+     "l12" integer NOT NULL CHECK("l12" >= 0),
+     "l13" integer NOT NULL CHECK("l13" >= 0),
+     "l14.1|l14.2" integer NOT NULL CHECK("l14.1|l14.2" >= 0),
+     "l15" integer NOT NULL CHECK("l15" >= 0)
   )`);
   return schemaName;
 }

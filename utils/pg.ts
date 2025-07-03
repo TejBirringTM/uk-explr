@@ -1,5 +1,6 @@
-import { type PoolClient, Client } from "pg";
-import pg from "../../libs/pg";
+import { type PoolClient } from "pg";
+import pg from "@/libs/pg-client";
+import { logError } from "@/libs/error";
 
 export const dbExists = async (client: PoolClient, dbName: string) =>
   ((await client.query(`SELECT FROM pg_database WHERE datname='${dbName}'`))
@@ -46,7 +47,7 @@ export const assertTableIsEmpty = async (
       process.exit(1);
     }
   } catch (error) {
-    console.error(error);
+    logError(error);
     process.exit(1);
   }
 };

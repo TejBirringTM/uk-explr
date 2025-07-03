@@ -1,13 +1,13 @@
 import { dbName } from "@/libs/config";
-import pg from "@/libs/pg";
+import pg from "@/libs/pg-client";
 import { z } from "zod";
 import processCsv from "@/libs/process-csv";
-import { assertTableIsEmpty } from "../../helpers/pg";
+import { assertTableIsEmpty } from "@/utils/pg";
 
-await assertTableIsEmpty(dbName, "uk-census-data", "highest-qualification");
+await assertTableIsEmpty(dbName, "uk-census-data", "highest-qualifications");
 
 const client = pg("editor", dbName);
-const queryString = `INSERT INTO "uk-census-data"."highest-qualification" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
+const queryString = `INSERT INTO "uk-census-data"."highest-qualifications" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
 
 // process the CSVs
 export default await processCsv(

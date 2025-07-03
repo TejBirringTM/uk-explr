@@ -1,10 +1,14 @@
 import { dbName } from "@/libs/config";
-import pg from "@/libs/pg";
+import pg from "@/libs/pg-client";
 import { z } from "zod";
 import processCsv from "@/libs/process-csv";
-import { assertTableIsEmpty } from "../../helpers/pg";
+import { assertTableIsEmpty } from "@/utils/pg";
 
-// await assertTableIsEmpty(dbName, "uk-census-data", "socio-economic-classifications");
+await assertTableIsEmpty(
+  dbName,
+  "uk-census-data",
+  "socio-economic-classifications",
+);
 
 const client = pg("editor", dbName);
 const queryString = `INSERT INTO "uk-census-data"."socio-economic-classifications" VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;

@@ -3,8 +3,9 @@ import { ZodType } from "zod";
 import fs from "node:fs";
 import { type Options, parse } from "csv-parse";
 import { transform } from "stream-transform";
-import { logError, mergeError } from "./error.js";
-import { tick, type TickTockDuration } from "./tick-tock.js";
+import { logError, mergeError } from "../error";
+import { tick, type TickTockDuration } from "../tick-tock";
+export { executeProcessCsvSequence } from "./execute-process-csv-sequence";
 
 export type ProcessRowFn<T, PrintOut = T> = (
   parsed: T,
@@ -50,7 +51,7 @@ export default async function processCsv<T>(
   /**
    * read out from the stream till end reached
    */
-  console.log(`Starting ${taskName}...`);
+  console.log(`Starting '${taskName}'...`);
   let rowCount = 0n;
   const tock = tick();
   for await (const n of pipeline) {
@@ -63,7 +64,7 @@ export default async function processCsv<T>(
    */
   await onFinishedFn();
   console.log(
-    `Finished ${taskName}!`,
+    `Finished '${taskName}'!`,
     `\n${rowCount.toLocaleString()} row(s) processed in ${duration.inSeconds.toLocaleString()} seconds.`,
   );
   return {

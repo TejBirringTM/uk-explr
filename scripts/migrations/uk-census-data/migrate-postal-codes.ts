@@ -1,8 +1,8 @@
 import { dbName } from "@/libs/config";
-import pg from "@/libs/pg";
+import pg from "@/libs/pg-client";
 import { z } from "zod";
 import processCsv from "@/libs/process-csv";
-import { assertTableIsEmpty } from "../../helpers/pg";
+import { assertTableIsEmpty } from "@/utils/pg";
 
 await assertTableIsEmpty(dbName, "uk-census-data", "postal-codes");
 

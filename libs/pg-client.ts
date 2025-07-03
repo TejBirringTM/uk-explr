@@ -59,5 +59,6 @@ class Postgres {
   }
 }
 
-export default (user: DbUserKey, dbName = "postgres") =>
+const pgClient = (user: DbUserKey, dbName = "postgres") =>
   new Postgres(user, dbName);
+export default pgClient;
