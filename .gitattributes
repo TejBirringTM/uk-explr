@@ -7,3 +7,4 @@ data/raw/uk-census-data/highest-qualification/2021-ts067-highest-level-of-qualif
 data/raw/uk-census-data/output-areas/Output_Area_to_Lower_layer_Super_Output_Area_to_Middle_layer_Super_Output_Area_to_Local_Authority_District_(December_2021)_Lookup_in_England_and_Wales_v3.csv filter=lfs diff=lfs merge=lfs -text
 data/raw/uk-census-data/economic-activity-status/2021-ts066-economic-activity-status.csv filter=lfs diff=lfs merge=lfs -text
 *.csv filter=lfs diff=lfs merge=lfs -text
+data/raw/uk-census-data/socio-economic-classification/2021-ts062-socio-economic-classification.csv filter=lfs diff=lfs merge=lfs -text

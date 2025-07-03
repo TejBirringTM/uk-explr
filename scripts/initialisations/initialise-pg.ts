@@ -132,7 +132,7 @@ async function createSchema_UkCensusData(client: PoolClient) {
      "private_rented_from_other" integer NOT NULL CHECK("private_rented_from_other" >= 0),
      "lives_rent_free" integer NOT NULL CHECK("lives_rent_free" >= 0)
   )`);
-  // create 'economic-activity-status' table, TO DO: improve checks with summation
+  // create 'economic-activity-statuses' table, TO DO: improve checks with summation
   await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."economic-activity-statuses" (
     "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
     "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
@@ -178,6 +178,20 @@ async function createSchema_UkCensusData(client: PoolClient) {
     "inactive:looking_after_home_or_family" integer NOT NULL CHECK ("inactive:looking_after_home_or_family" >= 0),
     "inactive:long_term_sickness_or_disabled" integer NOT NULL CHECK ("inactive:long_term_sickness_or_disabled" >= 0),
     "inactive:other" integer NOT NULL CHECK ("inactive:other" >= 0)
+  )`);
+  // create 'socio-economic-classifications' table;  National Statistics Socio-economic Classification (NS-SEC)
+  await client.query(`CREATE TABLE IF NOT EXISTS "${schemaName}"."socio-economic-classifications" (
+     "id" varchar(250) REFERENCES "${schemaName}"."output-areas"("id"),
+     "all_usual_residents_gte_16_years_of_age" integer NOT NULL CHECK ("all_usual_residents_gte_16_years_of_age" >= 0),
+     "L1|L2|L3" integer NOT NULL CHECK("L1|L2|L3" >= 0),
+     "L4|L5|L6" integer NOT NULL CHECK("L4|L5|L6" >= 0),
+     "L7" integer NOT NULL CHECK("L7" >= 0),
+     "L8|L9" integer NOT NULL CHECK("L8|L9" >= 0),
+     "L10|L11" integer NOT NULL CHECK("L10|L11" >= 0),
+     "L12" integer NOT NULL CHECK("L12" >= 0),
+     "L13" integer NOT NULL CHECK("L13" >= 0),
+     "L14.1|L14.2" integer NOT NULL CHECK("L14.1|L14.2" >= 0),
+     "L15" integer NOT NULL CHECK("L15" >= 0)
   )`);
   return schemaName;
 }
