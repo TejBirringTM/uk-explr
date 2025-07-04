@@ -6,6 +6,7 @@ import type { ZodType } from "zod";
 import type { Request } from "express";
 import asyncHandler from "express-async-handler";
 import type { Locals } from "../types/express";
+import validateRequestBody from "../middleware/validate-request-body.middleware";
 
 export function declareController<
   ReqBody extends object,
@@ -25,13 +26,16 @@ export function declareController<
     >,
   ) => Promise<ResInnerBody>,
 ) {
-  return asyncHandler(
-    declareRequestHandler<ReqBody, ResInnerBody, P, ReqQuery>(
-      async (req, res, next) => {
-        res.locals.responseSchema = responseSchema;
-        res.locals.response = await fn(req);
-        next();
-      },
+  return [
+    validateRequestBody(requestSchema),
+    asyncHandler(
+      declareRequestHandler<ReqBody, ResInnerBody, P, ReqQuery>(
+        async (req, res, next) => {
+          res.locals.responseSchema = responseSchema;
+          res.locals.response = await fn(req);
+          next();
+        },
+      ),
     ),
-  );
+  ];
 }

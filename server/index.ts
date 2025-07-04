@@ -29,7 +29,6 @@ app.get(
     limit: "100kb",
     parameterLimit: 100,
   }),
-  validateRequestBody(QueryRequest),
   queryController,
 );
 
