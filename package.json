@@ -1,7 +1,7 @@
 {
   "name": "uk-analysis-and-mapping",
   "version": "0.0.0",
-  "description": "A casual attempt to consolidate UK data (censuses, companies house, etc.) to conduct various kinds of analyses and explorative mapping; probably useful for property market.",
+  "description": "Consolidates UK stats and other (bulk) data from various sources (censuses, companies house, etc.) into a single SQL database, to conduct various kinds of analyses and for explorative mapping. Also provisions web server to query through REST API.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
