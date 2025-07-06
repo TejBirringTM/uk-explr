@@ -49,7 +49,7 @@ await client.transaction(async (client) => {
   for (const schemaName of schemas) {
     await client.query(`
             GRANT USAGE ON SCHEMA "${schemaName}" TO "${editorUsername}";
-            GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA "${schemaName}" TO "${editorUsername}";
+            GRANT MAINTAIN, SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA "${schemaName}" TO "${editorUsername}";
         `);
   }
   // grant permissions to reader

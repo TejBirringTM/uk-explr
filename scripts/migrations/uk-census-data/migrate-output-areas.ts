@@ -7,7 +7,7 @@ import { assertTableIsEmpty } from "@/utils/pg";
 await assertTableIsEmpty(dbName, "uk-census-data", "output-areas");
 
 const client = pg("editor", dbName);
-const queryString = `INSERT INTO "uk-census-data"."output-areas" VALUES (default, $1, $2, $3, $4, $5, $6, $7)`;
+const queryString = `INSERT INTO "uk-census-data"."output-areas" VALUES (default, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
 
 // process the CSVs
 export default await processCsv(
@@ -15,7 +15,7 @@ export default await processCsv(
   [
     "./data/raw/uk-census-data/output-areas/Output_Area_to_Lower_layer_Super_Output_Area_to_Middle_layer_Super_Output_Area_to_Local_Authority_District_(December_2021)_Lookup_in_England_and_Wales_v3.csv",
     "./data/raw/uk-census-data/output-areas/Output_Area_to_Lower_layer_Super_Output_Area_to_Middle_layer_Super_Output_Area_to_Local_Authority_District_(December_2011)_Lookup_in_England_and_Wales.csv",
-    "./data/raw/uk-census-data/output-areas/OA01_LSOA01_MSOA01_EW_LU_b75358eac2274f4fb012dcd32d13f5cf_-6173262702410378384.csv",
+    // "./data/raw/uk-census-data/output-areas/OA01_LSOA01_MSOA01_EW_LU_b75358eac2274f4fb012dcd32d13f5cf_-6173262702410378384.csv",
   ],
   {
     delimiter: ",",
@@ -42,6 +42,9 @@ export default await processCsv(
       MSOA21NM: z.string(),
       // MSOA21NMW: z.string(),
 
+      LAD22CD: z.string(),
+      LAD22NM: z.string(),
+
       // 2011 data:
       OA11CD: z.string(),
       OA11NM: z.string(),
@@ -55,6 +58,9 @@ export default await processCsv(
       MSOA11NM: z.string(),
       // MSOA11NMW: z.string(),
 
+      LAD11CD: z.string(),
+      LAD11NM: z.string(),
+
       // 2001 data:
       OA01CD: z.string(),
       OA01NM: z.string(),
@@ -66,7 +72,7 @@ export default await processCsv(
 
       MSOA01CD: z.string(),
       MSOA01NM: z.string(),
-      // MSOA01NMW: z.string()
+      // MSOA01NMW: z.string(),
     })
     .partial(),
   async (parsed, raw) => {
@@ -79,6 +85,9 @@ export default await processCsv(
         parsed.OA21NM || null,
         parsed.LSOA21NM || null,
         parsed.MSOA21NM || null,
+        parsed.LAD22CD || null,
+        2022,
+        parsed.LAD22NM || null,
       ]);
     } else if (parsed.OA11CD) {
       await client.query(queryString, [
@@ -89,8 +98,11 @@ export default await processCsv(
         parsed.OA11NM || null,
         parsed.LSOA11NM || null,
         parsed.MSOA11NM || null,
+        parsed.LAD11CD || null,
+        2011,
+        parsed.LAD11NM || null,
       ]);
-    } else if (parsed.OA01CD) {
+    } /* else if (parsed.OA01CD) {
       await client.query(queryString, [
         parsed.OA01CD || null,
         2001,
@@ -100,7 +112,7 @@ export default await processCsv(
         parsed.LSOA01NM || null,
         parsed.MSOA01NM || null,
       ]);
-    }
+    } */
     return parsed;
   },
   async () => {
