@@ -1,7 +1,7 @@
 {
-  "name": "uk-analysis-and-mapping",
+  "name": "uk-explr",
   "version": "0.0.0",
-  "description": "Consolidates UK stats and other (bulk) data from various sources (censuses, companies house, etc.) into a single SQL database, to conduct various kinds of analyses and for explorative mapping. Also provisions web server to query through REST API.",
+  "description": "An ETL pipeline implementation that ingests bulk data (such as CSV files from UK censuses) to produce a single stats lookup table with OA (output area) resolution; queryable by OA, LSOA (lower-layer super output area), MSOA (middle-layer super output area), LAD (local area district), or postal code. Also provisions REST API web server.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
