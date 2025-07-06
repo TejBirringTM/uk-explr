@@ -15,3 +15,23 @@ export function tick() {
   };
   return tock;
 }
+
+type Fn = () => void;
+type AsyncFn = () => Promise<void>;
+
+export function withTickTockSync(
+  fn: Fn,
+  onCompleteCallback: (duration: TickTockDuration) => void,
+) {
+  const tock = tick();
+  fn();
+  const duration = tock();
+  onCompleteCallback(duration);
+}
+
+export async function withTickTockAsync(fn: AsyncFn) {
+  const tock = tick();
+  await fn();
+  const duration = tock();
+  return duration;
+}
