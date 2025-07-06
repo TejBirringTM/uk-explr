@@ -59,6 +59,6 @@ class Postgres {
   }
 }
 
-const pgClient = (user: DbUserKey, dbName = "postgres") =>
+const pgClient = (user: DbUserKey, dbName = config.dbms.pg.defaultDb) =>
   new Postgres(user, dbName);
 export default pgClient;

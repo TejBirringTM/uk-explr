@@ -8,6 +8,7 @@ const DbUser = z.object({
 const Db = z.object({
   host: z.string().nonempty(),
   port: z.coerce.number().int().nonnegative(),
+  defaultDb: z.string().nonempty()
 });
 
 const Config = z.object({
@@ -46,6 +47,7 @@ export const config = Config.parse({
     pg: {
       host: process.env["PG_HOST"]!,
       port: process.env["PG_PORT"]! as unknown as number,
+      defaultDb: process.env["PG_DB"]!,
     },
     // mongo: {
     //   host: process.env["MONGODB_HOST"]!,
