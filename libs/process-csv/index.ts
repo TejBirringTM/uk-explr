@@ -5,6 +5,7 @@ import { type Options, parse } from "csv-parse";
 import { transform } from "stream-transform";
 import { logError, mergeError } from "../error";
 import { tick, type TickTockDuration } from "../tick-tock";
+import config from "../config";
 export { executeProcessCsvSequence } from "./execute-process-csv-sequence";
 
 export type ProcessRowFn<T, PrintOut = T> = (
@@ -55,7 +56,9 @@ export default async function processCsv<T>(
   let rowCount = 0n;
   const tock = tick();
   for await (const n of pipeline) {
-    console.debug(n);
+    if (config.verbose) {
+      console.debug(n);
+    }
     rowCount++;
   }
   const duration = tock();
