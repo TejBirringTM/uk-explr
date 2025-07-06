@@ -14,6 +14,7 @@ import { declareController } from "./utils/declare-controller";
 import myIpController from "./controllers/admin/my-ip.controller";
 
 const app = express();
+app.set("trust proxy", config.server.nOfTrustedProxies);
 app.set("x-powered-by", false);
 app.use(
   helmet(),

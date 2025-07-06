@@ -19,6 +19,7 @@ const Config = z.object({
   verbose: z.boolean(),
   server: z.object({
     port: z.coerce.number().int().nonnegative(),
+    nOfTrustedProxies: z.coerce.number().int().nonnegative(),
     rateLimit: z.object({
       windowSizeMs: z.coerce.number().int().nonnegative(),
       nOfRequestsPerWindow: z.coerce.number().int().nonnegative(),
@@ -46,6 +47,9 @@ export const config = Config.parse({
       : false,
   server: {
     port: process.env["PORT"] as unknown as number,
+    nOfTrustedProxies: process.env[
+      "NUM_OF_TRUSTED_PROXIES"
+    ] as unknown as number,
     rateLimit: {
       windowSizeMs: process.env[
         "RATE_LIMIT_WINDOW_SIZE_MS"
