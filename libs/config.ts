@@ -15,6 +15,7 @@ const Config = z.object({
     .string()
     .nonempty()
     .regex(/^(?:[a-z])(?:[a-z0-9\-]+)(?:[a-z0-9])$/), // accept lowercase, must begin with letter, end with letter or number, may contain dashes
+  verbose: z.boolean(),
   server: z.object({
     port: z.coerce.number().int().nonnegative(),
   }),
@@ -34,6 +35,10 @@ type Config = z.infer<typeof Config>;
 
 export const config = Config.parse({
   appName: process.env["APP_NAME"]!,
+  verbose:
+    process.env["VERBOSE"] && process.env["VERBOSE"].toLowerCase() === "true"
+      ? true
+      : false,
   server: {
     port: process.env["PORT"]! as unknown as number,
   },
