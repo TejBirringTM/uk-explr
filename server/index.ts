@@ -9,6 +9,9 @@ import QueryRequest from "./models/QueryRequest";
 import queryController from "./controllers/query.controller";
 import transmitValidatedResponse from "./middleware/transmit-validated-response.middleware";
 import transmitErrors from "./middleware/transmit-errors.middleware";
+import rateLimiter from "./middleware/rate-limiter";
+import { declareController } from "./utils/declare-controller";
+import myIpController from "./controllers/admin/my-ip.controller";
 
 const app = express();
 app.set("x-powered-by", false);
@@ -24,6 +27,7 @@ app.use(
 
 app.get(
   "/",
+  rateLimiter(),
   express.urlencoded({
     extended: true, // request body is parsed using the qs library (https://www.npmjs.org/package/qs#readme)
     limit: "100kb",
@@ -31,6 +35,8 @@ app.get(
   }),
   queryController,
 );
+
+app.get("/admin/my-ip", rateLimiter(), myIpController);
 
 app.use(transmitValidatedResponse());
 app.use(transmitErrors());

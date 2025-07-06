@@ -8,7 +8,7 @@ const DbUser = z.object({
 const Db = z.object({
   host: z.string().nonempty(),
   port: z.coerce.number().int().nonnegative(),
-  defaultDb: z.string().nonempty()
+  defaultDb: z.string().nonempty(),
 });
 
 const Config = z.object({
@@ -19,6 +19,10 @@ const Config = z.object({
   verbose: z.boolean(),
   server: z.object({
     port: z.coerce.number().int().nonnegative(),
+    rateLimit: z.object({
+      windowSizeMs: z.coerce.number().int().nonnegative(),
+      nOfRequestsPerWindow: z.coerce.number().int().nonnegative(),
+    }),
   }),
   dbms: z.object({
     pg: Db,
@@ -41,12 +45,20 @@ export const config = Config.parse({
       ? true
       : false,
   server: {
-    port: process.env["PORT"]! as unknown as number,
+    port: process.env["PORT"] as unknown as number,
+    rateLimit: {
+      windowSizeMs: process.env[
+        "RATE_LIMIT_WINDOW_SIZE_MS"
+      ] as unknown as number,
+      nOfRequestsPerWindow: process.env[
+        "RATE_LIMIT_NUM_OF_REQUEST_P_WINDOW"
+      ] as unknown as number,
+    },
   },
   dbms: {
     pg: {
       host: process.env["PG_HOST"]!,
-      port: process.env["PG_PORT"]! as unknown as number,
+      port: process.env["PG_PORT"] as unknown as number,
       defaultDb: process.env["PG_DB"]!,
     },
     // mongo: {

@@ -9,7 +9,7 @@ import type { Locals } from "../types/express";
 import validateRequestBody from "../middleware/validate-request-body.middleware";
 
 export function declareController<
-  ReqBody extends object,
+  ReqBody extends object | undefined,
   ResInnerBody extends object,
   P = ParamsDictionary,
   ReqQuery = ParsedQs,

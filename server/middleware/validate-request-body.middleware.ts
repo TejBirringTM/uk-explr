@@ -5,7 +5,7 @@ import declareRequestHandler from "../utils/declare-request-handler";
 import { ServerError } from "../types/server-error";
 
 export default function validateRequestBody<
-  ReqBody extends object,
+  ReqBody extends object | undefined,
   P = ParamsDictionary,
   ReqQuery = ParsedQs,
 >(schema: ZodType<ReqBody>) {

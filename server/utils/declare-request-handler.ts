@@ -5,7 +5,7 @@ import type { Locals } from "../types/express";
 import type { ApiSuccessResponse } from "../types/api-response";
 
 export type HandlerFnSync<
-  ReqBody extends object,
+  ReqBody extends object | undefined,
   ResInnerBody extends object,
   P = ParamsDictionary,
   ReqQuery = ParsedQs,
@@ -25,7 +25,7 @@ export type HandlerFnSync<
 ) => void;
 
 export type HandlerFnAsync<
-  ReqBody extends object,
+  ReqBody extends object | undefined,
   ResInnerBody extends object,
   P = ParamsDictionary,
   ReqQuery = ParsedQs,
@@ -45,7 +45,7 @@ export type HandlerFnAsync<
 ) => Promise<void>;
 
 export default function declareRequestHandler<
-  ReqBody extends object,
+  ReqBody extends object | undefined,
   ResInnerBody extends object,
   P = ParamsDictionary,
   ReqQuery = ParsedQs,
