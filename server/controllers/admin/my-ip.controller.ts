@@ -4,11 +4,15 @@ import { z } from "zod";
 const myIpController = declareController(
   z.undefined(),
   z.object({
-    ip: z.string().ip().or(z.null()),
+    data: z.object({
+      ip: z.string().ip().or(z.null()),
+    }),
   }),
   async (req) => {
     return {
-      ip: req.ip ?? null,
+      data: {
+        ip: req.ip ?? null,
+      },
     };
   },
 );
