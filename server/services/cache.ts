@@ -13,9 +13,11 @@ const stores: Keyv<string>[] = [
   // Layer 1 Cache - In-Memory LRU
   new Keyv({
     store: new CacheableMemory(),
-    useKeyPrefix: true,
-    namespace: "response", // trailing colon (':') automatically appended
+    // use compression
     compression: KeyvBrotli,
+    // use no prefix
+    useKeyPrefix: false,
+    namespace: undefined,
   }),
 ];
 
@@ -25,7 +27,9 @@ if (config.server.memcachedUrl) {
   stores.push(
     new Keyv({
       store: new KeyvMemcached(config.server.memcachedUrl),
-      // use no prefix, pass through as is from Layer 1
+      // use compression
+      compression: KeyvBrotli,
+      // use no prefix
       useKeyPrefix: false,
       namespace: undefined,
     }),
@@ -82,6 +86,6 @@ export function generateCacheKey<
 
   return {
     raw: rawKey,
-    hashed: hashedKey,
+    hashed: `response:${hashedKey}`,
   };
 }
