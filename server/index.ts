@@ -23,10 +23,11 @@ app.use(
   }),
   compression(),
 );
+app.use(rateLimiter());
 
-app.get("/v1/query-result", rateLimiter(), responseCacher(), queryController);
+app.get("/v1/query-result", responseCacher(), queryController);
 
-app.get("/admin/my-ip", rateLimiter(), myIpController);
+app.get("/admin/my-ip", myIpController);
 
 app.use(responseDispatcher());
 app.use(errorHandler());
