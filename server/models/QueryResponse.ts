@@ -6,4 +6,4 @@ const QueryResponse = z.object({
 });
 
 export default QueryResponse;
-export type Query = z.infer<typeof QueryResponse>;
+export type QueryResponse = z.infer<typeof QueryResponse>;

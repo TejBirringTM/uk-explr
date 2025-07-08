@@ -10,9 +10,9 @@ const QueryRequest = z.object({
     z.literal("lsoa+pc"), // lower layer super output area + postal codes
     z.literal("msoa+pc"), // middle layer super output area + postal codes
   ]),
-  pageSize: z.number().int().gte(25).lte(100).default(50),
-  pageNumber: z.number().int().gte(1).default(1),
+  pageSize: z.coerce.number().int().gte(25).lte(100).default(50),
+  pageNumber: z.coerce.number().int().gte(1).default(1),
 });
 
 export default QueryRequest;
-export type Query = z.infer<typeof QueryRequest>;
+export type QueryRequest = z.infer<typeof QueryRequest>;

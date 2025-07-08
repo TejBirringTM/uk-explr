@@ -1,4 +1,4 @@
-export type ApiSuccessResponse<T extends object | undefined> = {
+export type ApiSuccessResponse<T extends object> = {
   success: true;
   status: number;
   error: false;
@@ -11,6 +11,6 @@ export type ApiErrorResponse = {
   message?: string;
 };
 
-export type ApiResponse<T extends object | undefined> =
+export type ApiResponse<T extends object> =
   | ApiSuccessResponse<T>
   | ApiErrorResponse;

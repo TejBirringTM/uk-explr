@@ -4,14 +4,12 @@ import morgan from "morgan";
 import compression from "compression";
 import config from "@/libs/config";
 import helmet from "helmet";
-import validateRequestBody from "./middleware/validate-request-body.middleware";
-import QueryRequest from "./models/QueryRequest";
 import queryController from "./controllers/query.controller";
-import transmitValidatedResponse from "./middleware/transmit-validated-response.middleware";
-import transmitErrors from "./middleware/transmit-errors.middleware";
-import rateLimiter from "./middleware/rate-limiter";
-import { declareController } from "./utils/declare-controller";
+import rateLimiter from "./middleware/rate-limiter.middleware";
 import myIpController from "./controllers/admin/my-ip.controller";
+import responseDispatcher from "./middleware/response-dispatcher.middleware";
+import errorHandler from "./middleware/error-handler.middleware";
+import responseCacher from "./middleware/response-cacher.middleware";
 
 const app = express();
 app.set("trust proxy", config.server.nOfTrustedProxies);
@@ -26,21 +24,12 @@ app.use(
   compression(),
 );
 
-app.get(
-  "/",
-  rateLimiter(),
-  express.urlencoded({
-    extended: true, // request body is parsed using the qs library (https://www.npmjs.org/package/qs#readme)
-    limit: "100kb",
-    parameterLimit: 100,
-  }),
-  queryController,
-);
+app.get("/v1/query-result", rateLimiter(), responseCacher(), queryController);
 
 app.get("/admin/my-ip", rateLimiter(), myIpController);
 
-app.use(transmitValidatedResponse());
-app.use(transmitErrors());
+app.use(responseDispatcher());
+app.use(errorHandler());
 
 app.listen(config.server.port, () => {
   console.log(`Server listening on port ${config.server.port}...`);

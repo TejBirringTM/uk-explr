@@ -32,16 +32,22 @@
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.45.1",
+    "@keyv/memcache": "^2.0.2",
     "app-root-path": "^3.1.0",
+    "cache-manager": "^7.0.1",
+    "cacheable": "^1.10.1",
     "compression": "^1.8.0",
     "cors": "^2.8.5",
     "csv-parse": "^5.6.0",
     "express": "^5.1.0",
     "express-async-handler": "^1.2.0",
+    "farmhash": "^4.0.2",
     "helmet": "^8.1.0",
+    "keyv": "^5.3.4",
     "morgan": "^1.10.0",
     "multistream": "^4.1.0",
     "pg": "^8.16.2",
+    "rate-limit-memcached": "^1.0.1",
     "stream-transform": "^3.3.3",
     "zod": "^3.25.67"
   }
