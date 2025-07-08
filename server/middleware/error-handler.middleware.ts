@@ -32,7 +32,7 @@ export default function errorHandler<
     if (res.locals.responseCacheKey) {
       cache.set(res.locals.responseCacheKey, JSON.stringify(errorResponseObj));
       console.log(
-        `Cached error response '${res.locals.responseCacheKey}':\n`,
+        `Cache set (error) response '${res.locals.responseCacheKey}':\n`,
         errorResponseObj,
       );
     }

@@ -25,7 +25,7 @@ export default function responseDispatcher<
           if (res.locals.responseCacheKey) {
             cache.set(res.locals.responseCacheKey, JSON.stringify(responseObj));
             console.log(
-              `Cached response '${res.locals.responseCacheKey}':\n`,
+              `Cache set response '${res.locals.responseCacheKey}':\n`,
               responseObj,
             );
           }
