@@ -16,10 +16,10 @@ const stores: Keyv<string>[] = [
 ];
 
 // Layer 2 Cache — Memcached
-if (config.server.cache.memcachedUrl) {
+if (config.server.memcachedUrl) {
   stores.push(
     new Keyv({
-      store: new KeyvMemcached(config.server.cache.memcachedUrl),
+      store: new KeyvMemcached(config.server.memcachedUrl),
     }),
   );
 }
