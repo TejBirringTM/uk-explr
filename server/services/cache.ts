@@ -1,6 +1,7 @@
 import { createCache } from "cache-manager";
 import { CacheableMemory, Keyv } from "cacheable";
 import KeyvMemcached from "@keyv/memcache";
+import KeyvBrotli from "@keyv/compress-brotli";
 import config from "@/libs/config";
 import type { ParamsDictionary } from "express-serve-static-core";
 import type { ApiSuccessResponse } from "../types/api-response";
@@ -12,6 +13,9 @@ const stores: Keyv<string>[] = [
   // Layer 1 Cache - In-Memory LRU
   new Keyv({
     store: new CacheableMemory(),
+    useKeyPrefix: true,
+    namespace: "response", // trailing colon (':') automatically appended
+    compression: KeyvBrotli,
   }),
 ];
 
@@ -21,6 +25,9 @@ if (config.server.memcachedUrl) {
   stores.push(
     new Keyv({
       store: new KeyvMemcached(config.server.memcachedUrl),
+      // use no prefix, pass through as is from Layer 1
+      useKeyPrefix: false,
+      namespace: undefined,
     }),
   );
 }
@@ -66,7 +73,13 @@ export function generateCacheKey<
   // produce unhashed key
   const rawKey = `cache:${req.method}:${req.path}?${normalisedQueryString}`;
   // hash key for consistent length and therefore consistent lookup performance
-  const hashedKey = hash64(rawKey).toString();
+  const hashedKey = (() => {
+    const _hashedKey = hash64(rawKey);
+    const _buffer = Buffer.alloc(8);
+    _buffer.writeBigUInt64BE(_hashedKey, 0);
+    return _buffer.toString("hex");
+  })();
+
   return {
     raw: rawKey,
     hashed: hashedKey,

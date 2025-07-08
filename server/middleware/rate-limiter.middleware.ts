@@ -7,7 +7,7 @@ export default function rateLimiter() {
   if (config.server.memcachedUrl) {
     console.log("Rate Limiter is using Memcached.");
     store = new MemcachedStore({
-      prefix: "rate-limit",
+      prefix: "rate-limit:",
       locations: [config.server.memcachedUrl],
     });
   }
