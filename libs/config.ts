@@ -24,6 +24,10 @@ const Config = z.object({
       windowSizeMs: z.coerce.number().int().nonnegative(),
       nOfRequestsPerWindow: z.coerce.number().int().nonnegative(),
     }),
+    cache: z.object({
+      defaultTimeToLiveMs: z.coerce.number().int().nonnegative(),
+    }),
+    memcachedUrl: z.string().or(z.null()),
   }),
   dbms: z.object({
     pg: Db,
@@ -50,6 +54,9 @@ export const config = Config.parse({
     nOfTrustedProxies: process.env[
       "NUM_OF_TRUSTED_PROXIES"
     ] as unknown as number,
+    cache: {
+      defaultTimeToLiveMs: process.env["CACHE_TTL_MS"] as unknown as number,
+    },
     rateLimit: {
       windowSizeMs: process.env[
         "RATE_LIMIT_WINDOW_SIZE_MS"
@@ -58,6 +65,7 @@ export const config = Config.parse({
         "RATE_LIMIT_NUM_OF_REQUEST_P_WINDOW"
       ] as unknown as number,
     },
+    memcachedUrl: process.env["MEMCACHED_URL"] ?? null,
   },
   dbms: {
     pg: {
