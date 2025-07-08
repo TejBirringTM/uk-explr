@@ -5,4 +5,4 @@ let client = pg("pgAdmin");
 await client.query(`DROP DATABASE IF EXISTS "${dbName}"`);
 await client.close();
 
-console.debug("Done!");
+console.log("Done!");

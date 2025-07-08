@@ -41,7 +41,7 @@ export const assertTableIsEmpty = async (
       await client.query(`SELECT COUNT(*) FROM "${schemaName}"."${tableName}"`)
     ).rows[0].count;
     if (nRowsInTable > 0) {
-      console.error(
+      console.log(
         `The table must be empty before migration: "${dbName}"."${schemaName}"."${tableName}"`,
       );
       process.exit(1);
