@@ -17,6 +17,7 @@ const stores: Keyv<string>[] = [
 
 // Layer 2 Cache — Memcached
 if (config.server.memcachedUrl) {
+  console.log("Response Cacher is using Memcached (for Layer 2 Cache).");
   stores.push(
     new Keyv({
       store: new KeyvMemcached(config.server.memcachedUrl),
