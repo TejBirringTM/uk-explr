@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '**/*.ts'",
-    "init": "dotenvx run -- npx jiti ./scripts/initialisations/initialise-db.ts",
-    "uninit": "dotenvx run -- npx jiti ./scripts/other/clear-db.ts",
-    "migrate": "dotenvx run -- npx jiti ./scripts/migrations/migrate.ts",
+    "format": "tsc --noEmit && prettier --write '**/*.ts'",
+    "init": "dotenvx run -- npx jiti ./etl-pipeline/initialisation/initialise-db.ts",
+    "uninit": "dotenvx run -- npx jiti ./etl-pipeline/initialisation/clear-db.ts",
+    "migrate": "dotenvx run -- npx jiti ./etl-pipeline/migrations/migrate.ts",
     "script": "dotenvx run -- npx jiti",
-    "serve": "dotenvx run -- npx jiti ./server/index.ts"
+    "serve": "dotenvx run -- npx jiti ./web-api/index.ts"
   },
   "keywords": [],
   "author": "",
