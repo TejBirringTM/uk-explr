@@ -16,10 +16,7 @@ export default function responseCacher<
       res.locals.responseCacheKey = key.hashed;
       const cachedResponse = await cache.get<string>(key.hashed);
       if (cachedResponse) {
-        console.log(
-          `Cache HIT '${res.locals.responseCacheKey}':\n`,
-          cachedResponse,
-        );
+        console.log(`Cache HIT '${res.locals.responseCacheKey}'`);
         const parsed: ApiSuccessResponse<ResBody> = JSON.parse(cachedResponse);
         res.status(parsed.status).json(parsed);
       } else {

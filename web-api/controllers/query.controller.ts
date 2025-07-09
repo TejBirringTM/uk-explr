@@ -85,8 +85,6 @@ const queryController = declareController(
         ? `SELECT * FROM "uk-census-data"."output-area-to-postal-codes-lookup" ${sortTemplate(mode, sort)} LIMIT ${limit} OFFSET ${offset}`
         : `SELECT * FROM "uk-census-data"."output-area-to-postal-codes-lookup" ${whereTemplate(mode, codes)} ${sortTemplate(mode, sort)} LIMIT ${limit} OFFSET ${offset}`;
 
-    console.log(query);
-
     const client = pg("reader", dbName);
     const result = await client.query(query);
 
