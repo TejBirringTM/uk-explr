@@ -1,7 +1,7 @@
 import { createCache } from "cache-manager";
 import { CacheableMemory, Keyv } from "cacheable";
 import KeyvMemcached from "@keyv/memcache";
-import KeyvBrotli from "@keyv/compress-brotli";
+// import KeyvBrotli from "@keyv/compress-brotli";
 import config from "@/libs/config";
 import type { ParamsDictionary } from "express-serve-static-core";
 import type { ApiSuccessResponse } from "../types/api-response";
@@ -14,7 +14,7 @@ const stores: Keyv<string>[] = [
   new Keyv({
     store: new CacheableMemory(),
     // use compression
-    compression: KeyvBrotli,
+    // compression: KeyvBrotli,
     // use no prefix
     useKeyPrefix: false,
     namespace: undefined,
@@ -28,7 +28,7 @@ if (config.server.memcachedUrl) {
     new Keyv({
       store: new KeyvMemcached(config.server.memcachedUrl),
       // use compression
-      compression: KeyvBrotli,
+      // compression: KeyvBrotli,
       // use no prefix
       useKeyPrefix: false,
       namespace: undefined,
