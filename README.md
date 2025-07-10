@@ -1,3 +1,10 @@
+[![GitHub License](https://img.shields.io/github/license/TejBirringTM/uk-explr?color=blue)](LICENSE.md)
+[![Last Commit](https://img.shields.io/github/last-commit/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/commits/main/)
+[![GitHub Issues](https://img.shields.io/github/issues/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/pulls)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-007ACC?logo=typescript&logoColor=007ACC&labelColor=FFF)](https://www.typescriptlang.org)
+[![Node](https://img.shields.io/badge/Node-23+-3C873A?logo=node.js&labelColor=FFF)](https://nodejs.org)
+
 # UK Explr
 
 ## Overview
@@ -23,19 +30,19 @@ Look up statistics by:
 
 #### Optimised Data Processing
 
-* Efficient handling of large datasets (e.g. UK census data)
+- Efficient handling of large datasets (e.g. UK census data)
 
-* Normalised output structure for consistent analysis
+- Normalised output structure for consistent analysis
 
 ### Use Cases
 
-* Real estate investment
+- Real estate investment
 
-* Policy analysis & demographic research
+- Policy analysis & demographic research
 
-* Location-based service development
+- Location-based service development
 
-* Academic studies requiring unified datasets
+- Academic studies requiring unified datasets
 
 Built with reliability and scalability in mind, this pipeline serves as a robust foundation for applications requiring granular UK geospatial statistics.
 
@@ -69,17 +76,17 @@ Key:
 🔘 — backlogged
 ```
 
-[] Add `USAGE.md` to explain how to use the codebase. 🔴
+- [ ] Add `USAGE.md` to explain how to use the codebase. 🔴
 
-[] Implement MCP (Model Context Protocol) Server for AI integration. 🔴
+- [ ] Implement MCP (Model Context Protocol) Server for AI integration. 🔴
 
-[] Implement HATEOAS (Hypermedia as the Engine of Application State) best practises in RESTful API implementation. 🟠
+- [ ] Implement HATEOAS (Hypermedia as the Engine of Application State) best practises in RESTful API implementation. 🟠
 
-[] Ingest street names to associate with postal codes. 🟡
+- [ ] Ingest street names to associate with postal codes. 🟡
 
-[] Ingest point geocoordinates for streets. 🔘
+- [ ] Ingest point geocoordinates for streets. 🔘
 
-[] Ingest boundary geocoordinates for Output Area (OA), Lower-layer Super Output Area (LSOA), Middle-layer Super Output Area (MSOA), and Local Area District (LAD). 🔘
+- [ ] Ingest boundary geocoordinates for Output Area (OA), Lower-layer Super Output Area (LSOA), Middle-layer Super Output Area (MSOA), and Local Area District (LAD). 🔘
 
 ## Contribution
 
@@ -91,12 +98,4 @@ Alternatively, feel free to make improvements by [submitting a pull request (PR)
 
 ## License
 
-```text
-Copyright (c) 2025 Tej Birring
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
+MIT; please see [LICENSE file](LICENSE.md) for more information.
