@@ -2,6 +2,10 @@
   "name": "uk-explr",
   "version": "0.0.0",
   "description": "An ETL pipeline implementation that ingests bulk data (such as CSV files from UK censuses) to produce a single stats lookup table with OA (output area) resolution; queryable by OA, LSOA (lower-layer super output area), MSOA (middle-layer super output area), LAD (local area district), or postal code. Also provisions REST API web server.",
+  "engines": {
+    "node": ">=23",
+    "npm": ">=10"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
