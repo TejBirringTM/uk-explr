@@ -1,4 +1,5 @@
 import { z } from "zod";
+import pkg from "@/package.json";
 
 const DbUser = z.object({
   username: z.string().nonempty(),
@@ -44,7 +45,7 @@ const Config = z.object({
 type Config = z.infer<typeof Config>;
 
 export const config = Config.parse({
-  appName: process.env["APP_NAME"]!,
+  appName: pkg.name, //process.env["APP_NAME"]!,
   verbose:
     process.env["VERBOSE"] && process.env["VERBOSE"].toLowerCase() === "true"
       ? true

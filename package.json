@@ -13,8 +13,13 @@
     "serve": "dotenvx run -- npx jiti ./web-api/index.ts"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Tej Birring",
+      "email": "tejbirring@gmail.com"
+    }
+  ],
+  "license": "MIT",
   "type": "module",
   "devDependencies": {
     "@testcontainers/postgresql": "^11.0.3",
