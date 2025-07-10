@@ -1,5 +1,5 @@
 [![GitHub License](https://img.shields.io/github/license/TejBirringTM/uk-explr?color=blue)](LICENSE.md)
-[![Last Commit](https://img.shields.io/github/last-commit/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/commits/main/)
+[![Last Commit](https://img.shields.io/github/last-commit/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/commits/main)
 [![GitHub Issues](https://img.shields.io/github/issues/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/TejBirringTM/uk-explr)](https://github.com/TejBirringTM/uk-explr/pulls)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5+-007ACC?logo=typescript&logoColor=007ACC&labelColor=FFF)](https://www.typescriptlang.org)
