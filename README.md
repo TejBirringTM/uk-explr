@@ -11,6 +11,13 @@
 
 UK Explr (alt. `uk-explr`) is a scalable ETL pipeline for UK census data that transforms bulk "raw" data (CSV and JSON files) into a unified statistical lookup table with multi-resolution querying capabilities.
 
+### Example Deployment
+
+A deployment can be accessed via the URL: https://uk-explr.up.railway.app
+
+(test query: https://uk-explr.up.railway.app/v1/query-result?mode=oa&pageSize=50)
+
+
 ### Key Features
 
 #### Flexible Geospatial Querying
