@@ -14,6 +14,7 @@ import responseCacher from "./middleware/response-cacher.middleware";
 const app = express();
 app.set("trust proxy", config.server.nOfTrustedProxies);
 app.set("x-powered-by", false);
+app.set("query parser", "extended"); // when value is 'extended', uses `qs` package instead of `querystring` package to parse query string
 app.use(
   helmet(),
   morgan("common"),

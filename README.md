@@ -11,12 +11,13 @@
 
 UK Explr (alt. `uk-explr`) is a scalable ETL pipeline for UK census data that transforms bulk "raw" data (CSV and JSON files) into a unified statistical lookup table with multi-resolution querying capabilities.
 
+**To get started, see [Usage](USAGE.md) file.**
+
 ### Example Deployment
 
 A deployment can be accessed via the URL: https://uk-explr.up.railway.app
 
 (test query: https://uk-explr.up.railway.app/v1/query-result?mode=oa&pageSize=50)
-
 
 ### Key Features
 
@@ -83,9 +84,9 @@ Key:
 🔘 — backlogged
 ```
 
-- [ ] Add `USAGE.md` to explain how to use the codebase. 🔴
-
 - [ ] Implement MCP (Model Context Protocol) Server for AI integration. 🔴
+
+- [ ] Create schema-derived `.../help` route (e.g. `GET /v1/query-result/help`) as documentation. 🟠
 
 - [ ] Implement HATEOAS (Hypermedia as the Engine of Application State) best practises in RESTful API implementation. 🟠
 
