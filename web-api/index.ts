@@ -25,8 +25,24 @@ app.use(
 );
 app.use(rateLimiter());
 
+/**
+ * this endpoint serves the query API.
+ *
+ */
 app.get("/v1/query-result", responseCacher(), queryController);
 
+/**
+ * this endpoint is used to help derive the correct `NUM_OF_TRUSTED_PROXIES` env var to
+ * ensure that the web server deduces the correct IP address of the client in deployment
+ * (i.e. behind any number of API gateways, load balancers, and other types of reverse proxies.)
+ *
+ * Once the correct number has been determined, you may comment out the below line.
+ *
+ * See:
+ *  - https://expressjs.com/en/guide/behind-proxies.html
+ *  - https://express-rate-limit.mintlify.app/guides/troubleshooting-proxy-issues
+ *
+ */
 app.get("/admin/my-ip", myIpController);
 
 app.use(responseDispatcher());
